@@ -52,7 +52,7 @@
         </div>
     </header>
 
-    <footer class="py-4 text-center text-muted">
+    <footer class="py-5 text-center text-muted">
         <small>&copy; 2025 CV Generator - Projet Epitech by Hugo Munoz</small>
     </footer>
 
