@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const inPhone = document.getElementById('in-phone');
     const inAddress = document.getElementById('in-address');
     const inAbout = document.getElementById('in-about');
+    const inPhoto = document.getElementById('in-photo');
     const templateChoice = document.getElementById('template-choice');
 
     // Zones de sortie Preview
     const outFullname = document.getElementById('out-fullname');
     const outJob = document.getElementById('out-job');
+    const previewPhoto = document.getElementById('preview-photo');
 
     // Listes et boutons
     const addExpBtn = document.getElementById('add-experience');
@@ -89,6 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('preview-skill-section').innerHTML = skillHtml;
     };
 
+    // Gestion de la photo
+    inPhoto.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewPhoto.style.backgroundImage = `url(${e.target.result})`;
+                previewPhoto.classList.remove('bg-secondary');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
     // Gestion du changement de template (Visuel Preview)
     templateChoice.addEventListener('change', (e) => {
         const preview = document.getElementById('cv-preview');
@@ -105,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Écouteurs globaux
     [inLastname, inFirstname, inJob, inEmail, inPhone, inAddress, inAbout].forEach(el => el.addEventListener('input', updatePreview));
 
-    // Fonctions d'ajout dynamique
     const setupAdd = (btn, templateId, listId) => {
         btn.addEventListener('click', () => {
             const clone = document.getElementById(templateId).content.cloneNode(true);
@@ -115,23 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePreview();
         });
     };
-
-    // Fonction pour mettre à jour le Profil
-        const updateAbout = () => {
-            const inAbout = document.getElementById('in-about');
-            const outAboutSection = document.getElementById('preview-about-section');
-            
-            if (inAbout.value.trim() !== "") {
-                outAboutSection.innerHTML = `
-                    <h5 class="text-uppercase fw-bold border-bottom pb-2 mb-3" style="font-size: 1.1rem; color: #333;">Profil</h5>
-                    <p class="text-muted" style="font-size: 0.95rem; white-space: pre-line;">${inAbout.value}</p>
-                `;
-            } else {
-                outAboutSection.innerHTML = "";
-            }
-        }
-
-        document.getElementById('in-about').addEventListener('input', updateAbout);
 
     setupAdd(addExpBtn, 'experience-template', 'experience-list');
     setupAdd(addEduBtn, 'education-template', 'education-list');

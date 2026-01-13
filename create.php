@@ -57,7 +57,7 @@
         <div class="col-md-6 form-column p-4 p-lg-5">
             <a href="index.php" class="btn btn-outline-secondary btn-sm mb-4">← Retour</a>
             
-            <form id="cv-form" action="export.php" method="POST">
+            <form id="cv-form" action="export.php" method="POST" enctype="multipart/form-data">
                 
                 <div class="card card-body shadow-sm mb-4 border-0">
                     <h5 class="fw-bold mb-3">Choix du Design</h5>
@@ -70,6 +70,11 @@
                 <div class="card card-body shadow-sm mb-4 border-0">
                     <h5 class="fw-bold mb-3">Informations Personnelles</h5>
                     <div class="row g-3">
+                        <div class="col-md-12 mb-2">
+                            <label class="form-label fw-bold">Photo de profil</label>
+                            <input type="file" name="profile_pic" id="in-photo" class="form-control" accept="image/*">
+                        </div>
+                        
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Nom</label>
                             <input type="text" name="lastname" id="in-lastname" class="form-control" placeholder="Ex: Munoz">
@@ -159,7 +164,7 @@
                 <div class="row g-0 h-100">
                     <div class="col-4 bg-dark text-white p-4" style="min-height: 297mm;">
                         <div class="text-center mb-4">
-                            <div class="rounded-circle bg-secondary d-inline-block" style="width: 100px; height: 100px; border: 3px solid white;"></div>
+                            <div id="preview-photo" class="rounded-circle bg-secondary d-inline-block" style="width: 100px; height: 100px; border: 3px solid white; background-size: cover; background-position: center;"></div>
                         </div>
                         <div class="mb-4">
                             <h2 id="out-fullname" class="h4 fw-bold mb-1 text-uppercase">Nom Prénom</h2>
@@ -169,14 +174,9 @@
                         <div id="preview-skill-section" class="mt-4"></div>
                     </div>
                     <div class="col-8 bg-white p-5">
-                        <div id="preview-about-section" class="mb-4">
-                            </div>
-
-                        <div id="preview-exp-section" class="mb-5">
-                        </div>
-
-                        <div id="preview-edu-section">
-                        </div>
+                        <div id="preview-about-section" class="mb-4"></div>
+                        <div id="preview-exp-section" class="mb-5"></div>
+                        <div id="preview-edu-section"></div>
                     </div>
                 </div>
             </div>
