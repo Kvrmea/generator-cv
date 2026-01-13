@@ -1,170 +1,141 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Éléments du formulaire
     const inLastname = document.getElementById('in-lastname');
     const inFirstname = document.getElementById('in-firstname');
     const inJob = document.getElementById('in-job');
-    const outFullname = document.getElementById('out-fullname');
-    const outJob = document.getElementById('out-job');
-
     const inEmail = document.getElementById('in-email');
     const inPhone = document.getElementById('in-phone');
     const inAddress = document.getElementById('in-address');
     const inAbout = document.getElementById('in-about');
+    const templateChoice = document.getElementById('template-choice');
 
-    const expList = document.getElementById('experience-list');
-    const addBtn = document.getElementById('add-experience');
-    const template = document.getElementById('experience-template');
+    // Zones de sortie Preview
+    const outFullname = document.getElementById('out-fullname');
+    const outJob = document.getElementById('out-job');
 
-    const eduList = document.getElementById('education-list');
+    // Listes et boutons
+    const addExpBtn = document.getElementById('add-experience');
     const addEduBtn = document.getElementById('add-education');
-    const eduTemplate = document.getElementById('education-template');
-
-    const skillList = document.getElementById('skill-list');
     const addSkillBtn = document.getElementById('add-skill');
-    const skillTemplate = document.getElementById('skill-template');
-
-    const updateHeader = () => {
-        outFullname.innerText = `${inLastname.value} ${inFirstname.value}`;
-        outJob.innerText = inJob.value;
-    }
-
-    const updateExperiences = () => {
-        const companies = Array.from(document.getElementsByName('exp_company[]'));
-        const titles = Array.from(document.getElementsByName('exp_title[]'));
-        const starts = Array.from(document.getElementsByName('exp_start[]'));
-        const ends = Array.from(document.getElementsByName('exp_end[]'));
-        const descriptions = Array.from(document.getElementsByName('exp_description[]'));
-
-        let html = '<h5 class="text-uppercase text-primary border-bottom border-primary pb-2 mb-4">Parcours Professionnel</h5>';
-        if (companies.length > 0) html += '<h3 class="fw-bold mb-3">Expériences professionnelles</h3>';
-
-        companies.forEach((company, i) => {
-            const title = titles[i];
-            const start = starts[i];
-            const end = ends[i];
-            const description = descriptions[i];
-            if (!(company.value.trim() || title.value.trim() || description.value.trim())) return;
-
-            html += `
-                <div class="mb-4">
-                    <strong>${title.value}</strong><br>
-                    <span class="text-muted">${company.value}</span><br>
-                    <small class="text-muted">${start.value || ''} - ${end.value || 'Aujourd’hui'}</small>
-                    <p class="mt-2 mb-0">${description.value.replace(/\n/g, '<br>')}</p>
-                </div>
-            `;
-        });
-        document.getElementById('preview-exp-section').innerHTML = html;
-    }
-
-    function updateEducations() {
-        const schools = Array.from(document.getElementsByName('edu_school[]'));
-        const degrees = Array.from(document.getElementsByName('edu_degree[]'));
-        const starts = Array.from(document.getElementsByName('edu_start[]'));
-        const ends = Array.from(document.getElementsByName('edu_end[]'));
-
-        let html = '';
-        if (schools.length > 0) html += '<h3 class="fw-bold mb-3">Formations</h3>';
-
-        schools.forEach((school, i) => {
-            if (!(school.value.trim() || degrees[i].value.trim())) return;
-            html += `
-                <div class="mb-4">
-                    <strong>${degrees[i].value}</strong><br>
-                    <span class="text-muted">${school.value}</span><br>
-                    <small class="text-muted">${starts[i].value || ''} - ${ends[i].value || 'Aujourd’hui'}</small>
-                </div>
-            `;
-        });
-        document.getElementById('preview-edu-section').innerHTML = html;
-    }
-
-    const updateSkills = () => {
-        const names = Array.from(document.getElementsByName('skill_name[]'));
-        const levels = Array.from(document.getElementsByName('skill_level[]'));
-        let html = '<h5 class="text-uppercase border-bottom pb-2 mb-3 mt-4">Compétences</h5>';
-
-        names.forEach((name, i) => {
-            if (!name.value) return;
-            let width = "0%";
-            if (levels[i].value === "Débutant") width = "25%";
-            if (levels[i].value === "Intermédiaire") width = "50%";
-            if (levels[i].value === "Avancé") width = "75%";
-            if (levels[i].value === "Expert") width = "100%";
-
-            html += `
-                <div class="mb-3">
-                    <small class="d-block mb-1">${name.value}</small>
-                    <div class="progress" style="height: 5px; background: rgba(255,255,255,0.1);">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: ${width}"></div>
-                    </div>
-                </div>
-            `;
-        });
-        document.getElementById('preview-skill-section').innerHTML = html;
-    };
-
-    const updateContact = () => {
-        let html = '<h5 class="text-uppercase small fw-bold border-bottom pb-1 mb-2 mt-4">Contact</h5>';
-        if (inEmail.value) html += `<p class="small mb-1">✉️ ${inEmail.value}</p>`;
-        if (inPhone.value) html += `<p class="small mb-1">📞 ${inPhone.value}</p>`;
-        if (inAddress.value) html += `<p class="small mb-0">📍 ${inAddress.value}</p>`;
-        document.getElementById('preview-contact-section').innerHTML = html;
-    };
-
-    const updateAbout = () => {
-        let html = '';
-        if (inAbout.value) {
-            html = `
-                <h5 class="text-uppercase fw-bold border-bottom pb-2 mb-3">Profil</h5>
-                <p class="text-muted small">${inAbout.value.replace(/\n/g, '<br>')}</p>
-            `;
-        }
-        document.getElementById('preview-about-section').innerHTML = html;
-    };
 
     const updatePreview = () => {
-        updateHeader();
-        updateContact();
-        updateAbout();
-        updateExperiences();
-        updateEducations();
-        updateSkills();
+        // 1. En-tête
+        outFullname.innerText = `${inFirstname.value} ${inLastname.value}`.toUpperCase();
+        outJob.innerText = inJob.value;
+
+        // 2. Contact (Sidebar)
+        let contactHtml = '<h6 class="text-uppercase border-bottom pb-1 mb-2 mt-4" style="font-size: 0.8rem;">Contact</h6>';
+        if (inEmail.value) contactHtml += `<p class="small mb-1">✉️ ${inEmail.value}</p>`;
+        if (inPhone.value) contactHtml += `<p class="small mb-1">📞 ${inPhone.value}</p>`;
+        if (inAddress.value) contactHtml += `<p class="small mb-0">📍 ${inAddress.value}</p>`;
+        document.getElementById('preview-contact-section').innerHTML = contactHtml;
+
+        // 3. À propos (Profil)
+        document.getElementById('preview-about-section').innerHTML = inAbout.value ? 
+            `<h5 class="text-uppercase border-bottom pb-2 mb-3 fw-bold">Profil</h5><p class="small text-muted">${inAbout.value.replace(/\n/g, '<br>')}</p>` : '';
+
+        // 4. Expériences
+        const companies = document.getElementsByName('exp_company[]');
+        const titles = document.getElementsByName('exp_title[]');
+        const starts = document.getElementsByName('exp_start[]');
+        const ends = document.getElementsByName('exp_end[]');
+        const descs = document.getElementsByName('exp_description[]');
+        
+        let expHtml = '<h5 class="text-uppercase border-bottom pb-2 mb-3 fw-bold">Expériences</h5>';
+        companies.forEach((comp, i) => {
+            if (comp.value || titles[i].value) {
+                expHtml += `
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between fw-bold"><span>${titles[i].value}</span><small>${starts[i].value} - ${ends[i].value || 'Présent'}</small></div>
+                        <div class="text-primary small mb-1">${comp.value}</div>
+                        <p class="small text-muted mb-0">${descs[i].value.replace(/\n/g, '<br>')}</p>
+                    </div>`;
+            }
+        });
+        document.getElementById('preview-exp-section').innerHTML = expHtml;
+
+        // 5. Formations
+        const schools = document.getElementsByName('edu_school[]');
+        const degrees = document.getElementsByName('edu_degree[]');
+        const eStarts = document.getElementsByName('edu_start[]');
+        const eEnds = document.getElementsByName('edu_end[]');
+
+        let eduHtml = '<h5 class="text-uppercase border-bottom pb-2 mb-3 fw-bold">Formations</h5>';
+        schools.forEach((sch, i) => {
+            if (sch.value || degrees[i].value) {
+                eduHtml += `
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between fw-bold"><span>${degrees[i].value}</span><small>${eStarts[i].value} - ${eEnds[i].value}</small></div>
+                        <div class="small">${sch.value}</div>
+                    </div>`;
+            }
+        });
+        document.getElementById('preview-edu-section').innerHTML = eduHtml;
+
+        // 6. Compétences
+        const sNames = document.getElementsByName('skill_name[]');
+        const sLevels = document.getElementsByName('skill_level[]');
+        let skillHtml = '<h6 class="text-uppercase border-bottom pb-1 mb-2 mt-4" style="font-size: 0.8rem;">Compétences</h6>';
+        sNames.forEach((name, i) => {
+            if (name.value) {
+                let w = sLevels[i].value === 'Expert' ? '100%' : (sLevels[i].value === 'Intermédiaire' ? '60%' : '30%');
+                skillHtml += `
+                    <div class="mb-2">
+                        <div class="small mb-1">${name.value}</div>
+                        <div class="progress" style="height: 4px;"><div class="progress-bar bg-info" style="width: ${w}"></div></div>
+                    </div>`;
+            }
+        });
+        document.getElementById('preview-skill-section').innerHTML = skillHtml;
     };
 
-    // Écouteurs pour les champs statiques (Identité, Contact, À propos)
-    [inLastname, inFirstname, inJob, inEmail, inPhone, inAddress, inAbout].forEach(input => {
-        if(input) input.addEventListener('input', updatePreview);
+    // Gestion du changement de template (Visuel Preview)
+    templateChoice.addEventListener('change', (e) => {
+        const preview = document.getElementById('cv-preview');
+        const sidebar = preview.querySelector('.col-4');
+        if (e.target.value === 'classic') {
+            sidebar.classList.replace('bg-dark', 'bg-light');
+            sidebar.classList.replace('text-white', 'text-dark');
+        } else {
+            sidebar.classList.replace('bg-light', 'bg-dark');
+            sidebar.classList.replace('text-dark', 'text-white');
+        }
     });
 
-    addBtn.addEventListener('click', () => {
-        const clone = template.content.cloneNode(true);
-        clone.querySelectorAll('input, textarea').forEach(input => input.addEventListener('input', updatePreview));
-        clone.querySelector('.remove-btn').addEventListener('click', (e) => {
-            e.target.closest('.experience-item').remove();
-            updatePreview();
-        });
-        expList.appendChild(clone);
-    });
+    // Écouteurs globaux
+    [inLastname, inFirstname, inJob, inEmail, inPhone, inAddress, inAbout].forEach(el => el.addEventListener('input', updatePreview));
 
-    addEduBtn.addEventListener('click', () => {
-        const clone = eduTemplate.content.cloneNode(true);
-        clone.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', updatePreview));
-        clone.querySelector('.remove-btn').addEventListener('click', (e) => {
-            e.target.closest('.education-item').remove();
+    // Fonctions d'ajout dynamique
+    const setupAdd = (btn, templateId, listId) => {
+        btn.addEventListener('click', () => {
+            const clone = document.getElementById(templateId).content.cloneNode(true);
+            clone.querySelectorAll('input, textarea, select').forEach(el => el.addEventListener('input', updatePreview));
+            clone.querySelector('.remove-btn').addEventListener('click', e => { e.target.closest('.card').remove(); updatePreview(); });
+            document.getElementById(listId).appendChild(clone);
             updatePreview();
         });
-        eduList.appendChild(clone);
-    });
+    };
 
-    addSkillBtn.addEventListener('click', () => {
-        const clone = skillTemplate.content.cloneNode(true);
-        clone.querySelectorAll('input, select').forEach(el => el.addEventListener('input', updatePreview));
-        clone.querySelector('.remove-btn').addEventListener('click', (e) => {
-            e.target.closest('.skill-item').remove();
-            updatePreview();
-        });
-        skillList.appendChild(clone);
-    });
+    // Fonction pour mettre à jour le Profil
+        const updateAbout = () => {
+            const inAbout = document.getElementById('in-about');
+            const outAboutSection = document.getElementById('preview-about-section');
+            
+            if (inAbout.value.trim() !== "") {
+                outAboutSection.innerHTML = `
+                    <h5 class="text-uppercase fw-bold border-bottom pb-2 mb-3" style="font-size: 1.1rem; color: #333;">Profil</h5>
+                    <p class="text-muted" style="font-size: 0.95rem; white-space: pre-line;">${inAbout.value}</p>
+                `;
+            } else {
+                outAboutSection.innerHTML = "";
+            }
+        }
+
+        document.getElementById('in-about').addEventListener('input', updateAbout);
+
+    setupAdd(addExpBtn, 'experience-template', 'experience-list');
+    setupAdd(addEduBtn, 'education-template', 'education-list');
+    setupAdd(addSkillBtn, 'skill-template', 'skill-list');
 
     updatePreview();
 });
