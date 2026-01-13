@@ -9,33 +9,104 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('add-experience');
     const template = document.getElementById('experience-template');
 
-    // Fonction de mise à jour de l'aperçu
-    const updatePreview = () => {
-        // 1. Mise à jour des infos de base
-        outFullname.innerText = `${inFirstname.value} ${inLastname.value}`;
-        outJob.innerText = inJob.value; // <-- IL MANQUAIT CETTE LIGNE pour afficher le métier
+    const eduList = document.getElementById('education-list');
+    const addEduBtn = document.getElementById('add-education');
+    const eduTemplate = document.getElementById('education-template');
 
-        // 2. Mise à jour des expériences
-        const companies = document.getElementsByName('exp_company[]');
-        const titles = document.getElementsByName('exp_title[]');
+    // Info générales
+    const updateHeader = () => {
+        outFullname.innerText = `${inLastname.value} ${inFirstname.value}`;
+        outJob.innerText = inJob.value;
+    }
 
-        let html = "<h3>Expériences</h3><ul>";
+    const updateExperiences = () => {
+        const companies = Array.from(document.getElementsByName('exp_company[]'));
+        const titles = Array.from(document.getElementsByName('exp_title[]'));
+        const starts = Array.from(document.getElementsByName('exp_start[]'));
+        const ends = Array.from(document.getElementsByName('exp_end[]'));
+        const descriptions = Array.from(document.getElementsByName('exp_description[]'));
+
+        let html = '';
+
+        if (companies.length > 0) {
+            html += '<h3 class="fw-bold mb-3">Expériences professionnelles</h3>';
+        }
+
         companies.forEach((company, i) => {
             const title = titles[i];
-            // On vérifie si l'un des deux champs est rempli
-            if (company.value.trim() !== "" || title.value.trim() !== "") {
-                html += `<li><strong>${title.value}</strong> chez ${company.value}</li>`;
-            }
-        });
-        html += "</ul>";
+            const start = starts[i];
+            const end = ends[i];
+            const description = descriptions[i];
 
-        let previewExp = document.getElementById('preview-exp-section');
-        if (!previewExp) {
-            previewExp = document.createElement('div');
-            previewExp.id = 'preview-exp-section';
-            document.getElementById('cv-preview').appendChild(previewExp);
-        }
-        previewExp.innerHTML = html;
+            const hasContent =
+                company.value.trim() ||
+                title.value.trim() ||
+                description.value.trim();
+
+            if (!hasContent) return;
+
+            const startDate = start.value || '';
+            const endDate = end.value || 'Aujourd’hui';
+
+            html += `
+                <div class="mb-4">
+                    <strong>${title.value}</strong><br>
+                    <span class="text-muted">${company.value}</span><br>
+                    <small class="text-muted">${startDate} - ${endDate}</small>
+
+                    <p class="mt-2 mb-0">
+                        ${description.value.replace(/\n/g, '<br>')}
+                    </p>
+                </div>
+            `;
+        });
+
+        document.getElementById('preview-exp-section').innerHTML = html;
+    }
+
+    function updateEducations() {
+    const schools = Array.from(document.getElementsByName('edu_school[]'));
+    const degrees = Array.from(document.getElementsByName('edu_degree[]'));
+    const starts = Array.from(document.getElementsByName('edu_start[]'));
+    const ends = Array.from(document.getElementsByName('edu_end[]'));
+
+    let html = '';
+
+    if (schools.length > 0) {
+        html += '<h3 class="fw-bold mb-3">Formations</h3>';
+    }
+
+    schools.forEach((school, i) => {
+        const degree = degrees[i];
+        const start = starts[i];
+        const end = ends[i];
+
+        const hasContent =
+            school.value.trim() ||
+            degree.value.trim();
+
+        if (!hasContent) return;
+
+        const startDate = start.value || '';
+        const endDate = end.value || 'Aujourd’hui';
+
+        html += `
+            <div class="mb-4">
+                <strong>${degree.value}</strong><br>
+                <span class="text-muted">${school.value}</span><br>
+                <small class="text-muted">${startDate} - ${endDate}</small>
+            </div>
+        `;
+    });
+
+    document.getElementById('preview-edu-section').innerHTML = html;
+}
+
+    // Fonction de mise à jour de l'aperçu
+    const updatePreview = () => {
+        updateHeader();
+        updateExperiences();
+        updateEducations();
     };
 
     // Gestion du bouton Ajouter une expérience
@@ -44,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // On active la mise à jour en direct pour les nouveaux champs créés
         // Sinon, taper dedans ne fera rien car ils n'ont pas d'écouteurs
-        clone.querySelectorAll('input').forEach(input => {
+        clone.querySelectorAll('input, textarea').forEach(input => {
             input.addEventListener('input', updatePreview);
         });
 
@@ -55,6 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         expList.appendChild(clone);
+    });
+
+    addEduBtn.addEventListener('click', () => {
+        const clone = eduTemplate.content.cloneNode(true);
+
+        clone.querySelectorAll('input, textarea').forEach(el => {
+            el.addEventListener('input', updatePreview);
+        });
+
+        clone.querySelector('.remove-btn').addEventListener('click', (e) => {
+            e.target.closest('.education-item').remove();
+            updatePreview();
+        });
+
+        eduList.appendChild(clone);
     });
 
     inLastname.addEventListener('input', updatePreview);

@@ -108,38 +108,85 @@
                     <button type="submit" class="btn btn-success btn-lg w-100 shadow">Générer mon CV en PDF</button>
                 </div>
 
-                <template id="experience-template">
+               <template id="experience-template">
                     <div class="card card-body shadow-sm mb-3 experience-item border-0">
                         <div class="row g-3">
+
                             <div class="col-md-6">
                                 <label class="form-label">Entreprise</label>
-                                <input type="text" name="exp_company[]" class="form-control exp-input" placeholder="Ex: Google">
+                                <input type="text" name="exp_company[]" class="form-control">
                             </div>
+
                             <div class="col-md-6">
                                 <label class="form-label">Poste</label>
-                                <input type="text" name="exp_title[]" class="form-control exp-input" placeholder="Ex: Développeur">
+                                <input type="text" name="exp_title[]" class="form-control">
                             </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Date de début</label>
+                                <input type="month" name="exp_start[]" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Date de fin</label>
+                                <input type="month" name="exp_end[]" class="form-control">
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">Description des missions</label>
+                                <textarea name="exp_description[]" class="form-control" rows="3"
+                                    placeholder="Décris tes missions, responsabilités, résultats…"></textarea>
+                            </div>
+
                             <div class="col-md-12 text-end">
-                                <button type="button" class="btn btn-sm btn-link text-danger remove-btn">Supprimer</button>
+                                <button type="button" class="btn btn-sm btn-link text-danger remove-btn">
+                                    Supprimer
+                                </button>
                             </div>
+
                         </div>
                     </div>
                 </template>
 
+
                 <template id="education-template">
                     <div class="card card-body shadow-sm mb-3 education-item border-0">
                         <div class="row g-3">
+
                             <div class="col-md-6">
-                                <label class="form-label">École / Université</label>
-                                <input type="text" name="edu_school[]" class="form-control edu-input" placeholder="Ex: Epitech">
+                                <label class="form-label">Établissement</label>
+                                <input type="text" name="edu_school[]" class="form-control"
+                                    placeholder="Ex: Epitech">
                             </div>
+
                             <div class="col-md-6">
-                                <label class="form-label">Diplôme</label>
-                                <input type="text" name="edu_degree[]" class="form-control edu-input" placeholder="Ex: Master">
+                                <label class="form-label">Diplôme / Formation</label>
+                                <input type="text" name="edu_degree[]" class="form-control"
+                                    placeholder="Ex: Bachelor Développement Web">
                             </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Date de début</label>
+                                <input type="month" name="edu_start[]" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Date de fin</label>
+                                <input type="month" name="edu_end[]" class="form-control">
+                            </div>
+
+                            <!-- <div class="col-md-12">
+                                <label class="form-label">Description</label>
+                                <textarea name="edu_description[]" class="form-control" rows="2"
+                                        placeholder="Spécialité, matières clés, projet notable…"></textarea>
+                            </div> -->
+
                             <div class="col-md-12 text-end">
-                                <button type="button" class="btn btn-sm btn-link text-danger remove-btn">Supprimer</button>
+                                <button type="button" class="btn btn-sm btn-link text-danger remove-btn">
+                                    Supprimer
+                                </button>
                             </div>
+
                         </div>
                     </div>
                 </template>
