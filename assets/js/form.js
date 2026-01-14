@@ -26,11 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
         outJob.innerText = inJob.value;
 
         // 2. Contact (Sidebar)
-        let contactHtml = '<h6 class="text-uppercase border-bottom pb-1 mb-2 mt-4" style="font-size: 0.8rem;">Contact</h6>';
-        if (inEmail.value) contactHtml += `<p class="small mb-1">✉️ ${inEmail.value}</p>`;
-        if (inPhone.value) contactHtml += `<p class="small mb-1">📞 ${inPhone.value}</p>`;
-        if (inAddress.value) contactHtml += `<p class="small mb-0">📍 ${inAddress.value}</p>`;
-        document.getElementById('preview-contact-section').innerHTML = contactHtml;
+        const outEmail = document.getElementById('out-email');
+        const outPhone = document.getElementById('out-phone');
+        const outAddress = document.getElementById('out-address');
+
+        if (outEmail) outEmail.innerText = inEmail.value || '';
+        if (outPhone) outPhone.innerText = inPhone.value || '';
+        if (outAddress) outAddress.innerText = inAddress.value || '';
+
 
         // 3. À propos (Profil)
         document.getElementById('preview-about-section').innerHTML = inAbout.value ? 

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer mon CV - CV Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <style>
         body, html {
             height: 100%;
@@ -22,7 +24,7 @@
         }
 
         .preview-container {
-            background: #e9ecef;
+            background: gray;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -170,7 +172,44 @@
                             <h2 id="out-fullname" class="h4 fw-bold mb-1 text-uppercase">Nom Prénom</h2>
                             <p id="out-job" class="small text-info opacity-75">Titre du poste</p>
                         </div>
-                        <div id="preview-contact-section"></div>
+                        <!-- <div id="preview-contact-section"></div> -->
+                         <div id="preview-contact-section" class="mb-4 small">
+
+                            <div class="d-flex align-items-start mb-2">
+                                <span class="me-2">
+                                    <!-- EMAIL -->
+                                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217L8 8.414.002 4.217V4z"/>
+                                        <path d="M0 4.697v7.104l5.803-3.558L0 4.697z"/>
+                                        <path d="M6.761 8.83l-6.761 4.146A2 2 0 0 0 2 14h12a2 2 0 0 0 1.999-1.024l-6.76-4.146L8 9.586l-1.239-.757z"/>
+                                        <path d="M16 4.697l-5.803 3.546L16 11.801V4.697z"/>
+                                    </svg>
+                                </span>
+                                <span id="out-email">email@email.com</span>
+                            </div>
+
+                            <div class="d-flex align-items-start mb-2">
+                                <span class="me-2">
+                                    <!-- TÉLÉPHONE -->
+                                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M3.654 1.328a.678.678 0 0 1 .737-.166l2.79 1.186c.329.14.445.515.27.833l-1.272 2.27a.678.678 0 0 1-.746.314l-1.02-.255a11.42 11.42 0 0 0 5.516 5.516l.255-1.02a.678.678 0 0 1 .314-.746l2.27-1.272a.678.678 0 0 1 .833.27l1.186 2.79a.678.678 0 0 1-.166.737l-2.29 2.29c-.329.329-.82.44-1.222.27-2.985-1.24-5.45-3.705-6.69-6.69-.17-.402-.06-.893.27-1.222l2.29-2.29z"/>
+                                    </svg>
+                                </span>
+                                <span id="out-phone">06 00 00 00 00</span>
+                            </div>
+
+                            <div class="d-flex align-items-start">
+                                <span class="me-2">
+                                    <!-- LOCALISATION -->
+                                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8 0a5 5 0 0 0-5 5c0 3.25 5 11 5 11s5-7.75 5-11a5 5 0 0 0-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+                                    </svg>
+                                </span>
+                                <span id="out-address">Ville, Pays</span>
+                            </div>
+
+                        </div>
+
                         <div id="preview-skill-section" class="mt-4"></div>
                     </div>
                     <div class="col-8 bg-white p-5">
