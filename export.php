@@ -9,6 +9,34 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Securisation des données
+     $_POST['firstname']   = $_POST['firstname']   ?? '';
+    $_POST['lastname']    = $_POST['lastname']    ?? '';
+    $_POST['job_title']   = $_POST['job_title']   ?? '';
+    $_POST['email']       = $_POST['email']       ?? '';
+    $_POST['phone']       = $_POST['phone']       ?? '';
+    $_POST['address']     = $_POST['address']     ?? '';
+    $_POST['about']       = $_POST['about']       ?? '';
+    $_POST['template_choice'] = $_POST['template_choice'] ?? 'modern';
+
+    $_POST['skill_name']      = $_POST['skill_name']      ?? [];
+    $_POST['skill_level']     = $_POST['skill_level']     ?? [];
+    $_POST['exp_company']     = $_POST['exp_company']     ?? [];
+    $_POST['exp_title']       = $_POST['exp_title']       ?? [];
+    $_POST['exp_start']       = $_POST['exp_start']       ?? [];
+    $_POST['exp_end']         = $_POST['exp_end']         ?? [];
+    $_POST['exp_description'] = $_POST['exp_description'] ?? [];
+    $_POST['edu_school']      = $_POST['edu_school']      ?? [];
+    $_POST['edu_degree']      = $_POST['edu_degree']      ?? [];
+    $_POST['edu_start']       = $_POST['edu_start']       ?? [];
+    $_POST['edu_end']         = $_POST['edu_end']         ?? [];
+
+    // Blocage si nom/prenom vides
+    if ($_POST['firstname'] === '' || $_POST['lastname'] === '') {
+        die('Le prénom et le nom sont obligatoires pour générer le CV.');
+    }
+    
     try {
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);

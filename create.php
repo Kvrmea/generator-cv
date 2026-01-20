@@ -63,6 +63,19 @@
                 
                 <div class="card card-body shadow-sm mb-4 border-0">
                     <h5 class="fw-bold mb-3">Choix du Design</h5>
+                    <div class="card card-body shadow-sm mb-4 border-0">
+                        <h5 class="fw-bold mb-3">Personnalisation</h5>
+
+                        <label class="form-label fw-bold">Couleur principale</label>
+                        <input 
+                            type="color"
+                            name="main_color"
+                            id="main-color"
+                            value="#0dcaf0"
+                            class="form-control form-control-color"
+                        >
+                    </div>
+
                     <select name="template_choice" id="template-choice" class="form-select">
                         <option value="modern">Moderne (Sidebar sombre)</option>
                         <option value="classic">Classique (Épuré)</option>

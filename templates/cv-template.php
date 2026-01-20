@@ -87,6 +87,13 @@
 <body>
 
 <?php
+
+// $basePath = realpath(__DIR__ . '/../assets/images/') . '/';
+
+// $iconEmail    = $basePath . 'email.png';
+// $iconPhone    = $basePath . 'phone.png';
+// $iconLocation = $basePath . 'location.png';
+
 $photoData = '';
 if (!empty($_FILES['profile_pic']['tmp_name'])) {
     $type = $_FILES['profile_pic']['type'];

@@ -24,7 +24,15 @@ body { font-family: Arial, sans-serif; margin: 0; padding: 30px; color:#333; }
 </head>
 <body>
 
-<?php if(!empty($_FILES['profile_pic']['tmp_name'])):
+<?php 
+// $basePath = realpath(__DIR__ . 'assets/images/') . '/';
+
+// $iconEmail    = $basePath . 'email.png';
+// $iconPhone    = $basePath . 'phone.png';
+// $iconLocation = $basePath . 'location.png';
+
+
+if(!empty($_FILES['profile_pic']['tmp_name'])):
 $data = file_get_contents($_FILES['profile_pic']['tmp_name']);
 $type = $_FILES['profile_pic']['type'];
 ?>
