@@ -1,101 +1,100 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<style>
-body { font-family: Arial, sans-serif; margin: 0; padding: 30px; color:#333; }
-.header { text-align:center; border-bottom:2px solid #333; padding-bottom:20px; }
-.header h1 { margin:0; font-size:24pt; }
-.contact { text-align:center; font-size:10pt; margin:15px 0; }
-.contact span { margin:0 10px; }
-.contact img { width:12px; vertical-align:middle; margin-right:4px; }
+    <meta charset="UTF-8">
+    <title>Mon CV - Classique</title>
+    <style>
+        /* Inclusion du fichier CSS externe pour le template classique */
+        <?php include 'assets/css/cv-classic.css'; ?>
 
-.section-title {
-    text-transform: uppercase;
-    font-weight: bold;
-    border-bottom: 1px solid #ddd;
-    margin: 25px 0 10px;
-}
+        /* Injection de la couleur dynamique */
+        :root {
+            --main-color: <?= $mainColor ?>;
+        }
 
-.item { margin-bottom:15px; }
-.item-head { display:flex; justify-content:space-between; font-weight:bold; }
-.skill-list { columns:2; list-style:none; padding:0; }
-</style>
+        /* Forçage pour Dompdf */
+        .sidebar { background-color: var(--main-color); }
+        .section-title { border-bottom-color: var(--main-color); }
+    </style>
 </head>
-<body>
+<body class="cv-classic-body">
 
-<?php 
-// $basePath = realpath(__DIR__ . 'assets/images/') . '/';
+<div class="wrapper">
+    <div class="sidebar">
+        <div class="photo-placeholder" 
+             style="background-image: url('<?= $userPhoto ?>'); background-size: cover; background-position: center; width: 100px; height: 100px;">
+        </div>
 
-// $iconEmail    = $basePath . 'email.png';
-// $iconPhone    = $basePath . 'phone.png';
-// $iconLocation = $basePath . 'location.png';
+        <div class="contact">
+            <div class="section-title" style="color: white; border-bottom-color: white;">Contact</div>
+            
+            <?php if(!empty($_POST['email'])): ?>
+            <span><img src="<?= $iconEmail ?>" width="12"> <?= htmlspecialchars($_POST['email']) ?></span>
+            <?php endif; ?>
 
+            <?php if(!empty($_POST['phone'])): ?>
+            <span><img src="<?= $iconPhone ?>" width="12"> <?= htmlspecialchars($_POST['phone']) ?></span>
+            <?php endif; ?>
 
-if(!empty($_FILES['profile_pic']['tmp_name'])):
-$data = file_get_contents($_FILES['profile_pic']['tmp_name']);
-$type = $_FILES['profile_pic']['type'];
-?>
-<img src="data:<?= $type ?>;base64,<?= base64_encode($data) ?>"
-     style="width:120px;height:120px;border-radius:50%;display:block;margin:0 auto 15px;">
-<?php endif; ?>
+            <?php if(!empty($_POST['address'])): ?>
+            <span><img src="<?= $iconLocation ?>" width="12"> <?= htmlspecialchars($_POST['address']) ?></span>
+            <?php endif; ?>
+        </div>
 
-<div class="header">
-    <h1><?= htmlspecialchars($_POST['firstname'].' '.$_POST['lastname']) ?></h1>
-    <div><?= htmlspecialchars($_POST['job_title']) ?></div>
-</div>
-
-<div class="contact">
-<?php if($_POST['email']): ?>
-<span>
-    <img src="<?= $iconEmail ?>" style="width:12px;vertical-align:middle;">
-    <?= htmlspecialchars($_POST['email']) ?>
-</span>
-<?php endif; ?>
-
-<?php if($_POST['phone']): ?>
-<span>
-    <img src="<?= $iconPhone ?>" style="width:12px;vertical-align:middle;">
-    <?= htmlspecialchars($_POST['phone']) ?>
-</span>
-<?php endif; ?>
-
-<?php if($_POST['address']): ?>
-<span>
-    <img src="<?= $iconLocation ?>" style="width:12px;vertical-align:middle;">
-    <?= htmlspecialchars($_POST['address']) ?>
-</span>
-<?php endif; ?>
-
-<?php if($_POST['about']): ?>
-<div class="section-title">Profil</div>
-<p><?= nl2br(htmlspecialchars($_POST['about'])) ?></p>
-<?php endif; ?>
-
-<?php if(!empty(array_filter($_POST['exp_company'] ?? []))): ?>
-<div class="section-title">Expériences</div>
-<?php foreach($_POST['exp_company'] as $i => $c):
-if($c || $_POST['exp_title'][$i]): ?>
-<div class="item">
-    <div class="item-head">
-        <span><?= htmlspecialchars($_POST['exp_title'][$i]) ?></span>
-        <span><?= $_POST['exp_start'][$i] ?> - <?= $_POST['exp_end'][$i] ?: 'Présent' ?></span>
+        <?php if(!empty(array_filter($_POST['skill_name'] ?? []))): ?>
+        <div class="section" style="margin-top: 30px;">
+            <div class="section-title" style="color: white; border-bottom-color: white;">Compétences</div>
+            <?php foreach($_POST['skill_name'] as $i => $name): 
+                if(!empty($name)): ?>
+                <div style="margin-bottom: 5px; font-size: 10pt;">
+                    <?= htmlspecialchars($name) ?> (<?= htmlspecialchars($_POST['skill_level'][$i]) ?>)
+                </div>
+            <?php endif; endforeach; ?>
+        </div>
+        <?php endif; ?>
     </div>
-    <em><?= htmlspecialchars($c) ?></em>
-    <p><?= nl2br(htmlspecialchars($_POST['exp_description'][$i])) ?></p>
-</div>
-<?php endif; endforeach; ?>
-<?php endif; ?>
 
-<?php if(!empty(array_filter($_POST['skill_name'] ?? []))): ?>
-<div class="section-title">Compétences</div>
-<ul class="skill-list">
-<?php foreach($_POST['skill_name'] as $i => $s):
-if($s): ?>
-<li><?= htmlspecialchars($s) ?> (<?= $_POST['skill_level'][$i] ?>)</li>
-<?php endif; endforeach; ?>
-</ul>
-<?php endif; ?>
+    <div class="content">
+        <h1><?= htmlspecialchars($_POST['firstname']) ?> <?= htmlspecialchars($_POST['lastname']) ?></h1>
+        <div class="job" style="color: var(--main-color);"><?= htmlspecialchars($_POST['job_title']) ?></div>
+
+        <?php if(!empty($_POST['about'])): ?>
+        <div class="section">
+            <div class="section-title">Profil</div>
+            <p><?= nl2br(htmlspecialchars($_POST['about'])) ?></p>
+        </div>
+        <?php endif; ?>
+
+        <?php if(!empty(array_filter($_POST['exp_company'] ?? []))): ?>
+        <div class="section">
+            <div class="section-title">Expériences</div>
+            <?php foreach($_POST['exp_company'] as $i => $comp):
+                if(!empty($comp) || !empty($_POST['exp_title'][$i])): ?>
+                <div class="item">
+                    <div class="item-title"><?= htmlspecialchars($_POST['exp_title'][$i]) ?></div>
+                    <div class="dates"><?= $_POST['exp_start'][$i] ?> - <?= $_POST['exp_end'][$i] ?: 'Présent' ?></div>
+                    <div style="font-style: italic;"><?= htmlspecialchars($comp) ?></div>
+                    <p><?= nl2br(htmlspecialchars($_POST['exp_description'][$i])) ?></p>
+                </div>
+            <?php endif; endforeach; ?>
+        </div>
+        <?php endif; ?>
+
+        <?php if(!empty(array_filter($_POST['edu_school'] ?? []))): ?>
+        <div class="section">
+            <div class="section-title">Formations</div>
+            <?php foreach($_POST['edu_school'] as $i => $school):
+                if(!empty($school) || !empty($_POST['edu_degree'][$i])): ?>
+                <div class="item">
+                    <div class="item-title"><?= htmlspecialchars($_POST['edu_degree'][$i]) ?></div>
+                    <div class="dates"><?= $_POST['edu_start'][$i] ?> - <?= $_POST['edu_end'][$i] ?></div>
+                    <div><?= htmlspecialchars($school) ?></div>
+                </div>
+            <?php endif; endforeach; ?>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
 
 </body>
 </html>

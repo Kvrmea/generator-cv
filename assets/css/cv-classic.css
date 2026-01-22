@@ -1,0 +1,36 @@
+/* assets/css/cv-classic.css */
+.cv-classic-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    font-size: 11pt;
+    color: #222;
+}
+
+.wrapper { display: flex; min-height: 297mm; }
+
+.sidebar {
+    width: 30%;
+    background: var(--main-color, #eeeeee);
+    color: #333; /* Ajusté pour la lisibilité sur fond clair */
+    padding: 25px;
+}
+
+.content { width: 70%; padding: 30px; }
+
+h1 { margin: 0; font-size: 22pt; }
+.job { font-size: 12pt; margin-bottom: 20px; }
+
+.section { margin-bottom: 25px; }
+.section-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 11pt;
+    border-bottom: 2px solid var(--main-color, #0dcaf0);
+    margin-bottom: 10px;
+}
+
+.item { margin-bottom: 12px; }
+.item-title { font-weight: bold; }
+.dates { font-size: 9pt; color: #666; }
+
+.contact span { display: block; margin-bottom: 8px; font-size: 10pt; }

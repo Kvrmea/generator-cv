@@ -1,0 +1,129 @@
+/* assets/css/style.css */
+
+/* 1. Structure de la page */
+body, html {
+    height: 100%;
+    overflow-x: hidden;
+    background-color: #f8f9fa;
+}
+
+.main-row {
+    height: 100vh;
+}
+
+.form-column {
+    height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 80px;
+    background: white;
+    border-right: 1px solid #dee2e6;
+}
+
+/* 2. Zone de Preview (Le "Bureau" gris) */
+.preview-container {
+    background: #525659; /* Couleur type visionneuse PDF */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    overflow-y: auto;
+}
+
+/* 3. La Feuille A4 (La Preview) */
+#cv-preview {
+    background: white;
+    width: 210mm;
+    min-height: 297mm;
+    position: relative; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: scale(0.6); /* Ajuste cette valeur pour voir tout le CV */
+    transform-origin: top center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    /* Variables par défaut */
+    --main-color: #0dcaf0;
+}
+
+/* 4. Correction des Icônes (Taille fixe) */
+#cv-preview i, 
+#cv-preview svg {
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 14px !important;
+    display: inline-block;
+    vertical-align: baseline;
+    color: var(--main-color);
+}
+
+/* 5. Structure interne du CV (Modern par défaut) */
+#cv-preview .sidebar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 33%;
+    background: #212529;
+    color: white;
+    padding: 30px 20px;
+    z-index: 2;
+}
+
+#cv-preview .main {
+    margin-left: 33%;
+    padding: 40px;
+    background: white;
+    min-height: 297mm;
+}
+
+/* 6. MODE CLASSIQUE (Inversion via JS) */
+#cv-preview.template-classic .sidebar {
+    left: auto;
+    right: 0; /* Sidebar à droite */
+    background: var(--main-color); /* Sidebar prend la couleur choisie */
+    color: white;
+}
+
+#cv-preview.template-classic .main {
+    margin-left: 0;
+    margin-right: 33%; /* Contenu à gauche */
+}
+
+#cv-preview.template-classic .section-title {
+    border-bottom: 2px solid var(--main-color);
+    color: #333;
+}
+
+/* 7. Éléments communs internes */
+.photo-placeholder {
+    width: 120px; height: 120px;
+    background: #6c757d;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin: 0 auto 20px;
+    background-size: cover;
+    background-position: center;
+}
+
+.section-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12pt;
+    margin: 20px 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--main-color);
+}
+
+/* 8. Utilitaires Formulaire */
+.remove-btn {
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: #dc3545;
+}
+
+.sticky-bottom {
+    background: white;
+    box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 1200px) {
+    #cv-preview { transform: scale(0.45); }
+}
