@@ -1,36 +1,115 @@
-/* assets/css/cv-classic.css */
-.cv-classic-body {
-    font-family: Arial, sans-serif;
+@page { margin: 0; }
+
+body {
     margin: 0;
-    font-size: 11pt;
-    color: #222;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #111827;
 }
 
-.wrapper { display: flex; min-height: 297mm; }
+#cv-preview,
+.cv-classic-body {
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff;
+}
 
+/* STRUCTURE */
+.wrapper {
+    display: flex;
+    min-height: 297mm;
+}
+
+/* SIDEBAR GAUCHE */
 .sidebar {
-    width: 30%;
-    background: var(--main-color, #eeeeee);
-    color: #333; /* Ajusté pour la lisibilité sur fond clair */
-    padding: 25px;
+    width: 32%;
+    background: #f9fafb;
+    padding: 45px 30px;
+    border-right: 2px solid #111827;
 }
 
-.content { width: 70%; padding: 30px; }
+/* CONTENU */
+.content {
+    width: 68%;
+    padding: 50px 55px;
+}
 
-h1 { margin: 0; font-size: 22pt; }
-.job { font-size: 12pt; margin-bottom: 20px; }
+/* PHOTO */
+.photo-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    background-color: #d1d5db;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #111827;
+}
 
-.section { margin-bottom: 25px; }
+/* NOM */
+h1 {
+    font-size: 24pt;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.job {
+    margin-top: 8px;
+    font-size: 12pt;
+    font-style: italic;
+    margin-bottom: 35px;
+    color: #374151;
+}
+
+/* SECTIONS */
 .section-title {
+    font-size: 12pt;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 11pt;
-    border-bottom: 2px solid var(--main-color, #0dcaf0);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #111827;
+    padding-bottom: 6px;
 }
 
-.item { margin-bottom: 12px; }
-.item-title { font-weight: bold; }
-.dates { font-size: 9pt; color: #666; }
+/* ITEMS */
+.item {
+    margin-bottom: 22px;
+}
 
-.contact span { display: block; margin-bottom: 8px; font-size: 10pt; }
+.item-title {
+    font-weight: bold;
+    font-size: 11.5pt;
+}
+
+.dates {
+    font-size: 9.5pt;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+
+/* TEXTE */
+p {
+    font-size: 11pt;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* CONTACT */
+.contact-item {
+    display: flex;
+    align-items: center;
+    font-size: 10.5pt;
+    margin-bottom: 12px;
+}
+
+.contact-item img {
+    width: 13px;
+    height: 13px;
+    margin-right: 8px;
+}
+
+/* COMPÉTENCES */
+.skill-item {
+    font-size: 10.5pt;
+    margin-bottom: 8px;
+}

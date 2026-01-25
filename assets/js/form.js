@@ -1,170 +1,143 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Éléments du formulaire
-    const form          = document.getElementById('cv-form');
-    const inLastname    = document.getElementById('in-lastname');
-    const inFirstname   = document.getElementById('in-firstname');
-    const inJob         = document.getElementById('in-job');
-    const inEmail       = document.getElementById('in-email');
-    const inPhone       = document.getElementById('in-phone');
-    const inAddress     = document.getElementById('in-address');
-    const inAbout       = document.getElementById('in-about');
-    const inPhoto       = document.getElementById('in-photo');
-    const inMainColor   = document.getElementById('main-color');
-    const fontChoice    = document.getElementById('font-choice');
-    const templateChoice = document.getElementById('template-choice');
-
-    // Zones de sortie Preview
-    const cvPreview     = document.getElementById('cv-preview');
-    const outFullname   = document.getElementById('out-fullname');
-    const outJob        = document.getElementById('out-job');
-    const previewPhoto  = document.getElementById('preview-photo');
-
-    // Boutons d'ajout
-    const addExpBtn     = document.getElementById('add-experience');
-    const addEduBtn     = document.getElementById('add-education');
-    const addSkillBtn   = document.getElementById('add-skill');
-
+    const form = document.getElementById('cv-form');
+    
+    // Fonction principale de mise à jour
     const updatePreview = () => {
-        // DESIGN (Couleur, Police & Template)
-        cvPreview.style.setProperty('--main-color', inMainColor.value);
-        cvPreview.style.fontFamily = fontChoice.value;
-
-        // Gestion du basculement Modern / Classic
-        if (templateChoice.value === 'classic') {
-            cvPreview.classList.add('template-classic');
+        const template = document.getElementById('template-choice').value;
+        const mainColor = document.getElementById('main-color').value;
+        const container = document.querySelector('.cv-container');
+        const sidebar = document.querySelector('.cv-sidebar');
+        
+        // 1. Gestion des thèmes et couleurs
+        document.documentElement.style.setProperty('--main-color', mainColor);
+        if(template === 'classic') {
+            container.classList.add('rtl-container');
+            sidebar.style.backgroundColor = mainColor;
         } else {
-            cvPreview.classList.remove('template-classic');
+            container.classList.remove('rtl-container');
+            sidebar.style.backgroundColor = '#2c3e50';
         }
 
-        // EN-TÊTE
-        outFullname.innerText = `${inFirstname.value} ${inLastname.value}`.toUpperCase() || 'PRÉNOM NOM';
-        outJob.innerText = inJob.value || 'TITRE DU POSTE';
+        // 2. Infos Personnelles
+        document.getElementById('out-fullname').innerText = (document.getElementById('in-firstname').value + ' ' + document.getElementById('in-lastname').value).toUpperCase() || 'PRÉNOM NOM';
+        document.getElementById('out-job').innerText = document.getElementById('in-job').value || 'TITRE DU POSTE';
+        document.getElementById('out-email-text').innerText = document.getElementById('in-email').value || 'email@exemple.com';
+        document.getElementById('out-phone-text').innerText = document.getElementById('in-phone').value || '';
+        document.getElementById('out-address-text').innerText = document.getElementById('in-address').value || '';
 
-        // CONTACT
-        document.getElementById('out-email').innerText   = inEmail.value || 'email@exemple.com';
-        document.getElementById('out-phone').innerText   = inPhone.value || '06 00 00 00 00';
-        document.getElementById('out-address').innerText = inAddress.value || 'Ville, Pays';
+        // 3. À propos
+        const aboutValue = document.getElementById('in-about').value;
+        const aboutSection = document.getElementById('preview-about-section');
+        if(aboutValue) {
+            aboutSection.innerHTML = `<div class="section-title">Profil</div><p style="font-size:10pt; line-height:1.4;">${aboutValue.replace(/\n/g, '<br>')}</p>`;
+        } else {
+            aboutSection.innerHTML = '';
+        }
 
-        // À PROPOS
-        const aboutContent = document.getElementById('preview-about-section');
-        aboutContent.innerHTML = inAbout.value ? 
-            `<div class="section-title">Profil</div><div class="item-desc">${inAbout.value.replace(/\n/g, '<br>')}</div>` : '';
+        // 4. Expériences Professionnelles
+        renderDynamicSection('exp_company[]', 'exp_title[]', 'exp_start[]', 'exp_end[]', 'exp_description[]', 'preview-exp-section', 'Expériences Professionnelles');
 
-        // EXPÉRIENCES
-        const companies = document.getElementsByName('exp_company[]');
-        const titles    = document.getElementsByName('exp_title[]');
-        const starts    = document.getElementsByName('exp_start[]');
-        const ends      = document.getElementsByName('exp_end[]');
-        const descs     = document.getElementsByName('exp_description[]');
-        
-        let expHtml = '';
-        let hasExp = false;
-        companies.forEach((comp, i) => {
-            if (comp.value || titles[i].value) {
-                hasExp = true;
-                expHtml += `
-                    <div class="item">
-                        <span class="item-date">${starts[i].value} - ${ends[i].value || 'Présent'}</span>
-                        <div class="item-header">${titles[i].value}</div>
-                        <div class="item-sub">${comp.value}</div>
-                        <div class="item-desc">${descs[i].value.replace(/\n/g, '<br>')}</div>
-                    </div>`;
-            }
-        });
-        document.getElementById('preview-exp-section').innerHTML = hasExp ? `<div class="section-title">Expériences</div>${expHtml}` : '';
+        // 5. Formations
+        renderEducationSection('preview-edu-section');
 
-        // FORMATIONS
-        const schools = document.getElementsByName('edu_school[]');
-        const degrees = document.getElementsByName('edu_degree[]');
-        const eStarts = document.getElementsByName('edu_start[]');
-        const eEnds   = document.getElementsByName('edu_end[]');
-
-        let eduHtml = '';
-        let hasEdu = false;
-        schools.forEach((sch, i) => {
-            if (sch.value || degrees[i].value) {
-                hasEdu = true;
-                eduHtml += `
-                    <div class="item">
-                        <span class="item-date">${eStarts[i].value} - ${eEnds[i].value}</span>
-                        <div class="item-header">${degrees[i].value}</div>
-                        <div class="item-sub">${sch.value}</div>
-                    </div>`;
-            }
-        });
-        document.getElementById('preview-edu-section').innerHTML = hasEdu ? `<div class="section-title">Formations</div>${eduHtml}` : '';
-
-        // COMPÉTENCES
-        const sNames  = document.getElementsByName('skill_name[]');
-        const sLevels = document.getElementsByName('skill_level[]');
-        let skillHtml = '';
-        let hasSkills = false;
-        sNames.forEach((name, i) => {
-            if (name.value) {
-                hasSkills = true;
-                let w = sLevels[i].value === 'Expert' ? '100%' : (sLevels[i].value === 'Intermédiaire' ? '60%' : '30%');
-                skillHtml += `
-                    <div class="skill-item">
-                        <div class="skill-name">${name.value}</div>
-                        <div class="progress-bg"><div class="progress-bar" style="width: ${w}; background-color: var(--main-color)"></div></div>
-                    </div>`;
-            }
-        });
-        document.getElementById('preview-skill-section').innerHTML = hasSkills ? `<div class="contact-title">Compétences</div>${skillHtml}` : '';
+        // 6. Compétences (Sidebar)
+        renderSkillsSection();
     };
 
-    // GESTION DES ÉVÉNEMENTS
+    // Fonction pour les Expériences
+    function renderDynamicSection(compName, titleName, startName, endName, descName, targetId, sectionTitle) {
+        const companies = document.getElementsByName(compName);
+        const titles = document.getElementsByName(titleName);
+        const starts = document.getElementsByName(startName);
+        const ends = document.getElementsByName(endName);
+        const descs = document.getElementsByName(descName);
+        
+        let html = '';
+        companies.forEach((el, i) => {
+            if (el.value) {
+                html += `
+                <div class="item-box">
+                    <div class="item-title">${titles[i].value || 'Poste'}</div>
+                    <div class="item-sub">${el.value}</div>
+                    <div class="item-date">${starts[i].value} - ${ends[i].value || 'Présent'}</div>
+                    <div style="font-size:10pt;">${descs[i].value.replace(/\n/g, '<br>')}</div>
+                </div>`;
+            }
+        });
+        document.getElementById(targetId).innerHTML = html ? `<div class="section-title">${sectionTitle}</div>${html}` : '';
+    }
 
-    // Photo de profil
-    inPhoto.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                previewPhoto.style.backgroundImage = `url(${e.target.result})`;
-                previewPhoto.style.backgroundSize = "cover";
-                previewPhoto.style.backgroundPosition = "center";
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    // Fonction pour les Formations
+    function renderEducationSection(targetId) {
+        const schools = document.getElementsByName('edu_school[]');
+        const degrees = document.getElementsByName('edu_degree[]');
+        const starts = document.getElementsByName('edu_start[]');
+        const ends = document.getElementsByName('edu_end[]');
+        
+        let html = '';
+        schools.forEach((el, i) => {
+            if (el.value) {
+                html += `
+                <div class="item-box">
+                    <div class="item-title">${degrees[i].value || 'Diplôme'}</div>
+                    <div class="item-sub">${el.value}</div>
+                    <div class="item-date">${starts[i].value} - ${ends[i].value}</div>
+                </div>`;
+            }
+        });
+        document.getElementById(targetId).innerHTML = html ? `<div class="section-title">Formation</div>${html}` : '';
+    }
 
-    // Écouteurs sur tous les champs de base pour mise à jour immédiate
-    [inLastname, inFirstname, inJob, inEmail, inPhone, inAddress, inAbout, inMainColor, fontChoice, templateChoice].forEach(el => {
-        el.addEventListener('input', updatePreview);
-    });
+    // Fonction pour les Compétences (Sidebar)
+    function renderSkillsSection() {
+        const names = document.getElementsByName('skill_name[]');
+        const levels = document.getElementsByName('skill_level[]');
+        let html = '';
+        names.forEach((el, i) => {
+            if (el.value) {
+                let width = levels[i].value === 'Expert' ? '100%' : (levels[i].value === 'Intermédiaire' ? '60%' : '30%');
+                html += `
+                <div class="skill-item">
+                    <div style="font-size:9pt;">${el.value}</div>
+                    <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:${width};"></div></div>
+                </div>`;
+            }
+        });
+        document.getElementById('preview-skill-section').innerHTML = html ? `<div class="section-title sidebar-title">Compétences</div>${html}` : '';
+    }
 
-    // Ajout de champs dynamiques (Exp, Edu, Skills)
-    const setupAdd = (btn, templateId, listId) => {
+    // Écouteurs d'événements
+    form.addEventListener('input', updatePreview);
+
+    // Gestion de l'ajout dynamique (Boutons +)
+    document.querySelectorAll('.btn-add').forEach(btn => {
         btn.addEventListener('click', () => {
-            const clone = document.getElementById(templateId).content.cloneNode(true);
-            clone.querySelectorAll('input, textarea, select').forEach(el => el.addEventListener('input', updatePreview));
-            clone.querySelector('.remove-btn').addEventListener('click', e => { 
-                e.target.closest('.card').remove();
-                updatePreview(); 
-            });
+            const templateId = btn.getAttribute('data-template');
+            const listId = btn.getAttribute('data-list');
+            const template = document.getElementById(templateId);
+            const clone = template.content.cloneNode(true);
             document.getElementById(listId).appendChild(clone);
             updatePreview();
         });
-    };
+    });
 
-    setupAdd(addExpBtn, 'experience-template', 'experience-list');
-    setupAdd(addEduBtn, 'education-template', 'education-list');
-    setupAdd(addSkillBtn, 'skill-template', 'skill-list');
-
-    // GESTION D'ERREURS (Validation avant envoi)
-    form.addEventListener('submit', (e) => {
-        let errors = [];
-        if (!inFirstname.value.trim()) errors.push("Le prénom est obligatoire.");
-        if (!inLastname.value.trim()) errors.push("Le nom est obligatoire.");
-        if (!inEmail.value.trim()) errors.push("L'adresse email est obligatoire.");
-        
-        if (errors.length > 0) {
-            e.preventDefault(); // Bloque l'envoi
-            alert("Attention :\n- " + errors.join("\n- "));
+    // Suppression (Délégation d'événement)
+    form.addEventListener('click', (e) => {
+        if (e.target.closest('.remove-btn')) {
+            e.target.closest('.card').remove();
+            updatePreview();
         }
     });
 
-    // Initialisation au chargement
+    // Photo
+    document.getElementById('in-photo').addEventListener('change', function() {
+        const reader = new FileReader();
+        reader.onload = (e) => { 
+            document.querySelector('.photo-placeholder').style.backgroundImage = `url(${e.target.result})`; 
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    // Initialisation
     updatePreview();
 });

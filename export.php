@@ -47,11 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Génération du HTML via le template
         ob_start();
-        if ($template === 'classic') {
-            include 'templates/cv-template-classic.php';
-        } else {
-            include 'templates/cv-template.php';
-        }
+        // if ($template === 'classic') {
+        //     include 'templates/cv-template-classic.php';
+        // } else {
+        //     include 'templates/cv-template.php';
+        // }
+        include 'templates/cv-template.php';
         $html = ob_get_clean();
 
         // Rendu PDF

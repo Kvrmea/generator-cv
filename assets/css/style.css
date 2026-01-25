@@ -1,129 +1,76 @@
-/* assets/css/style.css */
+/* Reset pour Dompdf */
+@page { margin: 0; }
+body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; color: #333; }
 
-/* 1. Structure de la page */
-body, html {
-    height: 100%;
-    overflow-x: hidden;
-    background-color: #f8f9fa;
-}
-
-.main-row {
-    height: 100vh;
-}
-
-.form-column {
-    height: 100vh;
-    overflow-y: auto;
-    padding-bottom: 80px;
-    background: white;
-    border-right: 1px solid #dee2e6;
-}
-
-/* 2. Zone de Preview (Le "Bureau" gris) */
-.preview-container {
-    background: #525659; /* Couleur type visionneuse PDF */
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-    overflow-y: auto;
-}
-
-/* 3. La Feuille A4 (La Preview) */
-#cv-preview {
-    background: white;
+/* Structure en Tableaux (Seule méthode fiable pour Dompdf) */
+.cv-container {
+    display: table;
+    width: 100%;
     width: 210mm;
-    min-height: 297mm;
-    position: relative; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transform: scale(0.6); /* Ajuste cette valeur pour voir tout le CV */
-    transform-origin: top center;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    /* Variables par défaut */
-    --main-color: #0dcaf0;
+    height: 297mm;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
-/* 4. Correction des Icônes (Taille fixe) */
-#cv-preview i, 
-#cv-preview svg {
-    width: 14px !important;
-    height: 14px !important;
-    font-size: 14px !important;
-    display: inline-block;
-    vertical-align: baseline;
-    color: var(--main-color);
-}
+.cv-row { display: table-row; }
 
-/* 5. Structure interne du CV (Modern par défaut) */
-#cv-preview .sidebar {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 33%;
-    background: #212529;
-    color: white;
+.cv-sidebar {
+    display: table-cell;
+    width: 32%;
+    background: #2c3e50;
+    color: #ffffff;
+    vertical-align: top;
     padding: 30px 20px;
-    z-index: 2;
 }
 
-#cv-preview .main {
-    margin-left: 33%;
+.cv-main {
+    display: table-cell;
+    width: 68%;
+    background: #ffffff;
+    vertical-align: top;
     padding: 40px;
-    background: white;
-    min-height: 297mm;
 }
 
-/* 6. MODE CLASSIQUE (Inversion via JS) */
-#cv-preview.template-classic .sidebar {
-    left: auto;
-    right: 0; /* Sidebar à droite */
-    background: var(--main-color); /* Sidebar prend la couleur choisie */
-    color: white;
-}
-
-#cv-preview.template-classic .main {
-    margin-left: 0;
-    margin-right: 33%; /* Contenu à gauche */
-}
-
-#cv-preview.template-classic .section-title {
-    border-bottom: 2px solid var(--main-color);
-    color: #333;
-}
-
-/* 7. Éléments communs internes */
+/* Éléments */
 .photo-placeholder {
-    width: 120px; height: 120px;
-    background: #6c757d;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    border: 3px solid white;
     margin: 0 auto 20px;
-    background-size: cover;
+    background-color: #bdc3c7;
     background-position: center;
+    background-size: cover;
+    border: 3px solid #fff;
 }
 
 .section-title {
-    text-transform: uppercase;
+    font-size: 14pt;
     font-weight: bold;
-    font-size: 12pt;
-    margin: 20px 0 10px;
+    text-transform: uppercase;
+    margin: 25px 0 15px 0;
     padding-bottom: 5px;
-    border-bottom: 2px solid var(--main-color);
+    border-bottom: 2px solid var(--main-color, #0dcaf0);
 }
 
-/* 8. Utilitaires Formulaire */
-.remove-btn {
-    text-decoration: none;
-    font-size: 0.8rem;
-    color: #dc3545;
+.sidebar-title {
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    font-size: 12pt;
+    margin-top: 20px;
 }
 
-.sticky-bottom {
-    background: white;
-    box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
-}
+.contact-item { margin-bottom: 10px; font-size: 9pt; }
+.contact-icon { width: 12px; height: 12px; margin-right: 8px; vertical-align: middle; }
 
-@media (max-width: 1200px) {
-    #cv-preview { transform: scale(0.45); }
-}
+.skill-item { margin-bottom: 12px; }
+.skill-bar-bg { background: rgba(255,255,255,0.2); height: 6px; width: 100%; margin-top: 4px; }
+.skill-bar-fill { height: 6px; background: #fff; }
+
+.item-box { margin-bottom: 20px; }
+.item-title { font-weight: bold; font-size: 12pt; }
+.item-sub { color: var(--main-color, #0dcaf0); font-weight: bold; font-size: 10pt; }
+.item-date { font-size: 9pt; color: #666; margin-bottom: 5px; }
+
+/* Inversion pour le mode Classic via PHP ou JS */
+.rtl-container { direction: rtl; }
+.ltr-content { direction: ltr; }
